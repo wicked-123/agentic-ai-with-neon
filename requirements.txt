@@ -255,8 +255,6 @@ psutil==7.2.2
     #   agentic-ai-with-neon (pyproject.toml)
     #   ipykernel
     #   ipython
-psycopg2==2.9.13
-    # via agentic-ai-with-neon (pyproject.toml)
 psycopg2-binary==2.9.13
     # via agentic-ai-with-neon (pyproject.toml)
 pure-eval==0.2.4
