@@ -172,26 +172,41 @@ async def get_history():
     """Return all past broadcast messages so the dashboard can hydrate on load"""
     return history
 
+_cached_schema = None
+
 @app.get("/schema")
 def get_schema():
     """Returns the database schema as a structured JSON object."""
+    global _cached_schema
+    if _cached_schema is not None:
+        return _cached_schema
+        
     try:
         from sql_agent import engine
         inspector = inspect(engine)
         schema_data = []
         for table_name in inspector.get_table_names():
             columns = []
+            
+            # Fetch constraints once per table
+            pk_cols = inspector.get_pk_constraint(table_name).get("constrained_columns", [])
+            fk_cols = []
+            for fk in inspector.get_foreign_keys(table_name):
+                fk_cols.extend(fk.get("constrained_columns", []))
+                
             for col in inspector.get_columns(table_name):
                 columns.append({
                     "name": col["name"],
                     "type": str(col["type"]),
-                    "primary_key": col["name"] in inspector.get_pk_constraint(table_name).get("constrained_columns", []),
-                    "foreign_key": any(col["name"] in fk.get("constrained_columns", []) for fk in inspector.get_foreign_keys(table_name))
+                    "primary_key": col["name"] in pk_cols,
+                    "foreign_key": col["name"] in fk_cols
                 })
             schema_data.append({
                 "table": table_name,
                 "columns": columns
             })
+            
+        _cached_schema = schema_data
         return schema_data
     except Exception as e:
         try:

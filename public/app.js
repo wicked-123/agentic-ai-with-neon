@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chartCreatedCard = document.getElementById('chartCreatedCard');
 
     const tableContainer = document.getElementById('tableContainer');
-    const REQUEST_TIMEOUT_MS = 15_000;
+    const REQUEST_TIMEOUT_MS = 60_000;
 
     async function fetchWithTimeout(url, options = {}) {
         const controller = new AbortController();
