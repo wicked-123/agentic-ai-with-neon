@@ -3,6 +3,10 @@ import sys
 import json
 import asyncio
 import re
+
+# Set dummy API key to prevent ChatOpenAI from crashing on import if missing
+os.environ.setdefault("OPENAI_API_KEY", "dummy_key_to_prevent_crash")
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse
@@ -19,8 +23,10 @@ from error_agent import error_graph
 
 app = FastAPI(title="viggy's data retrieval AI")
 
-# Serve the frontend files from the "public" directory
-app.mount("/static", StaticFiles(directory="public"), name="static")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+public_dir = os.path.join(BASE_DIR, "public")
+if os.path.exists(public_dir):
+    app.mount("/static", StaticFiles(directory=public_dir), name="static")
 
 class QueryRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2_000)
@@ -73,11 +79,11 @@ history = []
 
 @app.get("/")
 def read_index():
-    return FileResponse("public/index.html")
+    return FileResponse(os.path.join(BASE_DIR, "public", "index.html"))
 
 @app.get("/dashboard")
 def read_dashboard():
-    return FileResponse("public/dashboard.html")
+    return FileResponse(os.path.join(BASE_DIR, "public", "dashboard.html"))
 
 @app.post("/ask")
 async def ask_question(req: QueryRequest):

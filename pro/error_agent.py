@@ -13,7 +13,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
            
 llm = ChatOpenAI(
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
     temperature=0.3,
     api_key=os.environ.get("OPENAI_API_KEY")
 )

@@ -1,5 +1,5 @@
 """
-Simple chat with GPT-5-mini using OpenAI API
+Simple chat with gpt-4o-mini using OpenAI API
 """
 
 import os
@@ -14,7 +14,7 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
                                         
 def chat(message, system_prompt="You are a helpful assistant.", temperature=0.7):
     response = client.chat.completions.create(
-        model="gpt-5-mini",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": message},
@@ -27,7 +27,7 @@ def chat(message, system_prompt="You are a helpful assistant.", temperature=0.7)
                                                              
 def chat_with_history(messages, temperature=0.7):
     response = client.chat.completions.create(
-        model="gpt-5-mini",
+        model="gpt-4o-mini",
         messages=messages,
         temperature=temperature,
     )
@@ -36,7 +36,7 @@ def chat_with_history(messages, temperature=0.7):
 
                        
 if __name__ == "__main__":
-    print("GPT-5-mini Chat (type 'quit' to exit)\n")
+    print("gpt-4o-mini Chat (type 'quit' to exit)\n")
 
     history = [{"role": "system", "content": "You are a helpful assistant."}]
 

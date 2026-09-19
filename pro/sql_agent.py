@@ -17,9 +17,13 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
                         
 Database_URL = os.environ.get("DATABASE_URL")
-engine = create_engine(Database_URL, connect_args={"connect_timeout": 10}, pool_pre_ping=True)
-db = SQLDatabase(engine)
-llm = ChatOpenAI(model="gpt-5-mini", temperature=0)
+if Database_URL:
+    engine = create_engine(Database_URL, connect_args={"connect_timeout": 10}, pool_pre_ping=True)
+    db = SQLDatabase(engine)
+else:
+    engine = None
+    db = None
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 
 def ensure_read_only_sql(sql_query: str) -> None:
@@ -50,6 +54,8 @@ class AgentState(TypedDict):
 
                                                                                 
 def get_schema(state: AgentState):
+    if db is None:
+        raise ValueError("DATABASE_URL environment variable is not set.")
     schema_info = db.get_table_info()
     print("got the schema")
     return {"schema_info": schema_info}
