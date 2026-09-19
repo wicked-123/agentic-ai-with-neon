@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ask questions about your Neon database in plain English. Powered by AI agents.">
+    <title>viggy's data retrieval AI</title>
+    <link rel="stylesheet" href="/static/style.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <script src="/static/utils.js?v=2"></script>
+</head>
+<body>
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="page-layout">
+        
+        <!-- Left: Main Workspace -->
+        <div class="main-workspace">
+            <header class="app-header">
+                <div style="display:flex; align-items:center; gap:0.8rem;">
+                    <div class="logo">
+                        <img src="/static/db.png" alt="Database Logo" class="logo-icon-img">
+                        <h1>DataFlow</h1>
+                    </div>
+                </div>
+                <a href="/dashboard" class="btn-dashboard" target="_blank">
+                    <img src="/static/dashboard.png" alt="Dashboard Icon" style="width:16px; height:16px; object-fit:contain;"> Go to Dashboard
+                </a>
+            </header>
+
+            <main>
+                <div class="hero-section">
+                    <h2>What would you like to explore?</h2>
+                    <p>Ask questions, create charts, or view data tables.</p>
+                </div>
+
+                <!-- Search Box -->
+                <div class="search-container">
+                    <img src="/static/search.png" alt="Search Icon" style="width:20px; height:20px; margin-right:0.5rem; object-fit:contain;">
+                    <input type="text" id="promptInput" placeholder='e.g., "Create a chart of recent transactions" or "What is the highest num..."'>
+                    <button id="searchBtn">→</button>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading" id="loadingIndicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing and querying database...</p>
+                </div>
+
+                <!-- Output Section -->
+                <div class="output-section" id="outputSection" style="display: none;">
+                    
+                    <div class="card answer-card">
+                        <h3>Answer</h3>
+                        <p id="answerText"></p>
+                        <div id="tableContainer"></div>
+                        <div id="followupContainer"></div>
+                    </div>
+
+                    <div class="card sql-card" id="sqlCard">
+                        <h3>Generated SQL</h3>
+                        <pre><code id="sqlText"></code></pre>
+                    </div>
+
+                    <!-- Appears when a chart is routed to dashboard -->
+                    <div class="card chart-created-card" id="chartCreatedCard" style="display: none;">
+                        <span class="icon">📈</span>
+                        <div class="content">
+                            <h4>Chart Generated Successfully!</h4>
+                            <p>Head over to your Live Dashboard tab to view and interact with the visualization.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+        <!-- Right: Schema Sidebar -->
+        <aside class="schema-sidebar">
+            <div class="sidebar-header">
+                <h2>Neon Database Schema</h2>
+                <input type="text" id="schemaSearchInput" placeholder="Search tables or columns..." class="schema-search">
+            </div>
+            <div id="schemaList" class="schema-list">
+                <div class="loading-schema">Loading schema details...</div>
+            </div>
+        </aside>
+
+    </div>
+
+    <script src="/static/app.js?v=2"></script>
+</body>
+</html>
