@@ -189,6 +189,9 @@ def get_schema():
         
     try:
         from sql_agent import engine
+        if engine is None:
+            return {"error": "Database connection is not configured. Please set DATABASE_URL or POSTGRES_URL."}
+            
         inspector = inspect(engine)
         schema_data = []
         for table_name in inspector.get_table_names():
@@ -215,12 +218,7 @@ def get_schema():
         _cached_schema = schema_data
         return schema_data
     except Exception as e:
-        try:
-            error_result = error_graph.invoke({"error_message": str(e)})
-            friendly_msg = error_result.get("friendly_message", "An unexpected error occurred. Please try again later.")
-            return {"error": friendly_msg}
-        except Exception:
-            return {"error": "We're experiencing technical difficulties. Please try again later."}
+        return {"error": f"Failed to connect to the database: {str(e)}"}
 
 @app.get("/stream")
 async def stream_insights(request: Request):
