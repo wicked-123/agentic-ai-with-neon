@@ -16,7 +16,11 @@ from langgraph.graph import StateGraph, START, END
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"))
 
                         
-Database_URL = os.environ.get("DATABASE_URL") or os.environ.get("POSTGRES_URL")
+Database_URL = (
+    os.environ.get("Databaseurl")
+    or os.environ.get("DATABASE_URL")
+    or os.environ.get("POSTGRES_URL")
+)
 if Database_URL:
     engine = create_engine(Database_URL, connect_args={"connect_timeout": 10}, pool_pre_ping=True)
     db = SQLDatabase(engine)

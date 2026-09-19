@@ -17,9 +17,13 @@ from sqlalchemy import create_engine
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(dotenv_path=ROOT / ".env")
 
-DATABASE_URL = os.environ.get("DATABASE_URL") or os.environ.get("POSTGRES_URL")
+DATABASE_URL = (
+    os.environ.get("Databaseurl")
+    or os.environ.get("DATABASE_URL")
+    or os.environ.get("POSTGRES_URL")
+)
 if not DATABASE_URL:
-    raise SystemExit("DATABASE_URL / POSTGRES_URL is not set.")
+    raise SystemExit("Databaseurl / DATABASE_URL / POSTGRES_URL is not set.")
 
 engine = create_engine(DATABASE_URL, connect_args={"connect_timeout": 10})
 

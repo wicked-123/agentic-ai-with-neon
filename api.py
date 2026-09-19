@@ -166,6 +166,7 @@ async def ask_question(req: QueryRequest):
             }
 
     except Exception as e:
+        print("[v0] /ask error:", repr(e))
         try:
             error_result = error_graph.invoke({"error_message": str(e)})
             friendly_msg = error_result.get("friendly_message", "An unexpected error occurred. Please try again later.")
@@ -190,7 +191,7 @@ def get_schema():
     try:
         from sql_agent import engine
         if engine is None:
-            return {"error": "Database connection is not configured. Please set DATABASE_URL or POSTGRES_URL."}
+            return {"error": "Database connection is not configured. Please set Databaseurl, DATABASE_URL, or POSTGRES_URL."}
             
         inspector = inspect(engine)
         schema_data = []
